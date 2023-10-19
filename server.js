@@ -3,6 +3,11 @@ const express = require("express");
 
 const app = express();
 const bookRouter = require("./routes/book");
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGO_URL).then(() => {
+  console.log("Connected to MongoDB");
+});
 // const PORT = 8080; hard coding of port number- not ideal because something else might be running here
 //process.env holds all environment variables values
 const PORT = process.env.PORT;
@@ -31,6 +36,3 @@ console.log({ bookRouter });
 app.use("/api/books", bookRouter);
 
 //create .gitignore and .env file manually
-
-
-
