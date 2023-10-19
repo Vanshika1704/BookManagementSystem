@@ -1,3 +1,4 @@
+//to create a new book collection in db
 const mongoose = require("mongoose");
 
 const bookSchema = new mongoose.Schema({
