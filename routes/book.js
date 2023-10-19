@@ -51,10 +51,12 @@ router.get("/", async (req, res) => {
   res.send(books);
 });
 
-// router.get("/:id", (req, res) => {
-//   const id = req.params.id;
-//   res.send(books[id - 1]);
-// });
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const book = await Book.findById();
+  // res.send(books[id - 1]);
+  res.send(book);
+});
 router.post("/", async (req, res) => {
   console.log(req.body);
   const book = req.body;
