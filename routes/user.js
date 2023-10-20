@@ -15,9 +15,20 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const dbUser = await User.findOne({email}); // to find user by email in the db
+  const dbUser = await User.findOne({ email }); // to find user by email in the db
   isPasswordSame = await bcrypt.compare(password, dbUser.password);
-  res.send({isPasswordSame});
+  if (isPasswordSame) {
+    //generate token
+    const token = jwt.sign(
+      { email: dbUser.email, role: dbUser.role },
+      process.env.JWT_SECRET, //email and role are 2 keys that we are sending on the payload
+    );
+    res.send({ token });
+  } else {
+    //throw error
+    res.status(401).send("Unauthorised");
+  }
+  // res.send({ isPasswordSame });
 });
 
 module.exports = router;

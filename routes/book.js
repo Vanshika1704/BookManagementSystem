@@ -1,4 +1,5 @@
 const express = require("express"); // access to express
+const jwt = require("jsonwebtoken");
 
 const router = express.Router(); // this fxn is provided by express using which we can create a separate routers and mount different routes on top of this router
 //its similar to app but u can define diff type of routes here
@@ -37,6 +38,17 @@ const router = express.Router(); // this fxn is provided by express using which 
 // books array is no longer required after we have defined a collection schema in models/book.js
 
 const Book = require("../models/book");
+const jwtVerify = (req, res, next) => {
+  console.log("headers", req.headers);
+  const authToken = req.headers.authorization; //jwt token that client is sending in the header
+  const decodedToken = jwt.verify(authToken, process.env.JWT_TOKEN);
+  req.user=decodedToken;
+  
+  console.log({ decodedToken });
+
+  next();
+};
+router.use(jwtVerify);
 
 // router.get("/", (req, res) => {
 //   res.send("Hello World");
